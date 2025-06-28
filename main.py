@@ -23,15 +23,12 @@ def create_new_query(data : schemas.InputQuery , db:Session = Depends(get_db)) :
     db.refresh(new_query_response)
     return new_query_response
 
-# @app.get("/queries/" , response_model=list[schemas.QueryResponseOut])
-# def get_all_queries(db:Session = Depends(get_db)) :
-#     return db.query(models.QueryResponse).all()
 
 @app.get("/queries/page/{page}", response_model=list[schemas.QueryResponseOut])
 def get_queries_by_page(
     page: int,
     db: Session = Depends(get_db),
-    page_size: int = 10  # Fixed page size, or make this a query param if you want it flexible
+    page_size: int = 10  
 ):
     if page < 1:
         raise HTTPException(status_code=400, detail="Page number must be >= 1")
